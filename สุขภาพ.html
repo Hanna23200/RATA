@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🔮 ดูดวงสุขภาพ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Prompt', sans-serif;
+      background: linear-gradient(135deg, #aefa97, #6188db);
+      margin: 0;
+      padding: 2rem 1rem;
+      color: #399e99;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      align-items: center;
+    }
+    .container {
+      background: #97fad1;
+      padding: 2rem 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px #0c6841;
+      max-width: 320px;
+      width: 100%;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+    }
+    label {
+      display: block;
+      text-align: left;
+      font-weight: 600;
+      margin: 1rem 0 0.4rem 0;
+      font-size: 1rem;
+      color: #269775;
+    }
+    input[type="text"],
+    input[type="date"] {
+      width: 89%;
+      padding: 0.6rem 0.8rem;
+      border: 2px solid #219787;
+      border-radius: 10px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+    input[type="text"]:focus,
+    input[type="date"]:focus {
+      border-color: #97fad1;
+    }
+    button.submit-btn {
+      margin-top: 2rem;
+      width: 100%;
+      background: linear-gradient(45deg, #97fad1,#5ee6c4, #42cec2);
+      border: none;
+      border-radius: 25px;
+      color: white;
+      font-size: 1.15rem;
+      font-weight: 700;
+      padding: 0.85rem 0;
+      cursor: pointer;
+      box-shadow: 0 6px 15px #1c8170;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+    button.submit-btn:hover {
+      background: linear-gradient(45deg, #97fad1, #18917d);
+      transform: scale(1.05);
+    }
+
+    button.back-btn {
+      margin-top: 1rem;
+      background: #4bdabb;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 0.8rem 1.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 15px #137059;
+      transition: background 0.3s ease;
+    }
+    button.back-btn:hover {
+      background: #97fad1;
+    }
+
+    #prediction {
+      margin-top: 2rem;
+      background: #97fad1;
+      border-radius: 15px;
+      padding: 1.3rem 1rem;
+      box-shadow: 0 4px 15px #20c7ab;
+      font-weight: 600;
+      color: #2e9167;
+      font-size: 1.1rem;
+      min-height: 3rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>🔮 ดูดวงสุขภาพ</h1>
+
+    <form id="loveForm">
+      <label for="name">ชื่อ</label>
+      <input type="text" id="name" placeholder="กรอกชื่อของคุณ" required />
+
+      <label for="dob">วันเดือนปีเกิด</label>
+      <input type="date" id="dob" required />
+
+      <label for="idEnd">เลขท้ายบัตรประชาชน (3 ตัว)</label>
+      <input type="text" id="idEnd" placeholder="XXX" pattern="\d{3}" maxlength="3" required />
+
+      <button type="submit" class="submit-btn">รับคำทำนาย</button>
+    </form>
+
+    <button class="back-btn" onclick="window.location.href='horoscope.html'">⬅️ กลับไปดูดวงอื่น</button>
+
+    <div id="prediction"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('loveForm');
+    const predictionDiv = document.getElementById('prediction');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const dob = document.getElementById('dob').value;
+      const idEnd = document.getElementById('idEnd').value.trim();
+
+      if(!name || !dob || !/^\d{3}$/.test(idEnd)) {
+        predictionDiv.textContent = "กรุณากรอกข้อมูลให้ครบถ้วนและถูกต้องค่ะ";
+        return;
+      }
+
+      // สุ่มคำทำนายง่ายๆ ตัวอย่าง
+     const predictions = [
+  `${name} 🧘‍♀️ ช่วงนี้ควรให้เวลากับการพักผ่อนและฟื้นฟูร่างกายอย่างเพียงพอ`,
+  `${name} 🍎 สุขภาพโดยรวมแข็งแรง แต่ควรระวังเรื่องอาหารและการกินให้อยู่ในระดับพอดี`,
+  `${name} 🏃‍♂️ เหมาะกับการออกกำลังกายแบบเบา ๆ เช่น เดินเล่น หรือโยคะเพื่อเสริมพลัง`,
+  `${name} 💧 ดื่มน้ำมากขึ้นเพื่อช่วยระบบไหลเวียนและดีท็อกซ์สารพิษในร่างกาย`,
+  `${name} 😴 ควรปรับเวลานอนให้เหมาะสม หลีกเลี่ยงการนอนดึกที่ส่งผลเสียต่อสุขภาพ`,
+  `${name} 🤕 ระวังการบาดเจ็บเล็กน้อยจากกิจกรรมประจำวัน อย่าประมาทเรื่องความปลอดภัย`,
+  `${name} 🧠 ให้ความสำคัญกับสุขภาพจิต ลดความเครียดด้วยกิจกรรมผ่อนคลายและทำสมาธิ`,
+  `${name} 🌿 ควรเลือกใช้สมุนไพรหรือวิธีธรรมชาติในการดูแลสุขภาพเสริม`,
+  `${name} 🦷 อย่าลืมตรวจสุขภาพช่องปากและฟันเป็นประจำเพื่อป้องกันปัญหาในระยะยาว`,
+  `${name} 🍀 อากาศเปลี่ยนแปลง ควรใส่ใจเรื่องการปรับตัวและเสื้อผ้าให้เหมาะสม`,
+  `${name} 🛀 ใช้เวลาพักผ่อนแบบสปาหรือบำบัดเพื่อคลายความเมื่อยล้าและเพิ่มพลัง`,
+  `${name} 🍽️ ควบคุมการกินอาหารที่มีน้ำตาลและไขมันสูง เพื่อลดความเสี่ยงโรคเรื้อรัง`
+];
+
+
+
+
+      // สร้างดัชนีแบบสุ่มโดยใช้ข้อมูลบางส่วนผสม (วันเกิด+เลขท้าย)
+      const seed = dob.replace(/-/g, '') + idEnd;
+      let hash = 0;
+      for(let i=0; i < seed.length; i++) {
+        hash = (hash << 5) - hash + seed.charCodeAt(i);
+        hash |= 0; // Convert to 32bit integer
+      }
+      const index = Math.abs(hash) % predictions.length;
+
+      predictionDiv.textContent = predictions[index];
+    });
+  </script>
+
+</body>
+</html>

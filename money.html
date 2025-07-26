@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🔮 ดูดวงการเงิน</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Prompt', sans-serif;
+      background: linear-gradient(135deg, #fadabd, #e7a363);
+      margin: 0;
+      padding: 2rem 1rem;
+      color: #bb7636;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      align-items: center;
+    }
+    .container {
+      background: #fdd6b2;
+      padding: 2rem 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px #7a4009;
+      max-width: 320px;
+      width: 100%;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+    }
+    label {
+      display: block;
+      text-align: left;
+      font-weight: 600;
+      margin: 1rem 0 0.4rem 0;
+      font-size: 1rem;
+      color: #ce8541;
+    }
+    input[type="text"],
+    input[type="date"] {
+      width: 89%;
+      padding: 0.6rem 0.8rem;
+      border: 2px solid #bb9775;
+      border-radius: 10px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+    input[type="text"]:focus,
+    input[type="date"]:focus {
+      border-color: #e7a363;
+    }
+    button.submit-btn {
+      margin-top: 2rem;
+      width: 100%;
+      background: linear-gradient(45deg, #e7a363, #e7a363);
+      border: none;
+      border-radius: 25px;
+      color: white;
+      font-size: 1.15rem;
+      font-weight: 700;
+      padding: 0.85rem 0;
+      cursor: pointer;
+      box-shadow: 0 6px 15px #af7742;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+    button.submit-btn:hover {
+      background: linear-gradient(45deg, #b87e49, #e7a363);
+      transform: scale(1.05);
+    }
+
+    button.back-btn {
+      margin-top: 1rem;
+      background: #e7a363;
+      color: #fde3ca;
+      border: none;
+      border-radius: 20px;
+      padding: 0.8rem 1.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 15px #ac7441;
+      transition: background 0.3s ease;
+    }
+    button.back-btn:hover {
+      background: #ecb784;
+    }
+
+    #prediction {
+      margin-top: 2rem;
+      background: #f7d0ab;
+      border-radius: 15px;
+      padding: 1.3rem 1rem;
+      box-shadow: 0 4px 15px #f7bb84;
+      font-weight: 600;
+      color: #9c622b;
+      font-size: 1.1rem;
+      min-height: 3rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>🔮 ดูดวงการเงิน</h1>
+
+    <form id="loveForm">
+      <label for="name">ชื่อ</label>
+      <input type="text" id="name" placeholder="กรอกชื่อของคุณ" required />
+
+      <label for="dob">วันเดือนปีเกิด</label>
+      <input type="date" id="dob" required />
+
+      <label for="idEnd">เลขท้ายบัตรประชาชน (3 ตัว)</label>
+      <input type="text" id="idEnd" placeholder="XXX" pattern="\d{3}" maxlength="3" required />
+
+      <button type="submit" class="submit-btn">รับคำทำนาย</button>
+    </form>
+
+    <button class="back-btn" onclick="window.location.href='horoscope.html'">⬅️ กลับไปดูดวงอื่น</button>
+
+    <div id="prediction"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('loveForm');
+    const predictionDiv = document.getElementById('prediction');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const dob = document.getElementById('dob').value;
+      const idEnd = document.getElementById('idEnd').value.trim();
+
+      if(!name || !dob || !/^\d{3}$/.test(idEnd)) {
+        predictionDiv.textContent = "กรุณากรอกข้อมูลให้ครบถ้วนและถูกต้องค่ะ";
+        return;
+      }
+const predictions = [
+  `${name} 💰 การเงินช่วงนี้มั่นคง มีโอกาสได้รับรายได้พิเศษจากช่องทางใหม่ ๆ`,
+  `${name} 📈 ควรวางแผนการใช้จ่ายให้รอบคอบ จะช่วยให้เงินเก็บเพิ่มขึ้นอย่างต่อเนื่อง`,
+  `${name} 💳 ระวังเรื่องหนี้สินและการก่อหนี้ที่ไม่จำเป็น อย่ากู้ยืมเกินตัว`,
+  `${name} 💵 โชคลาภจากการเสี่ยงดวงมีเข้ามาบ้าง แต่ควรระมัดระวังการลงทุนที่เสี่ยงสูง`,
+  `${name} 💼 โอกาสทางธุรกิจหรือการทำงานจะนำมาซึ่งรายได้ที่ดี แต่ต้องขยันและอดทน`,
+  `${name} 📉 ควรหลีกเลี่ยงการตัดสินใจทางการเงินแบบเร่งด่วน ให้คิดให้รอบคอบก่อนลงมือ`,
+  `${name} 🏦 การเงินของคุณจะมีการเปลี่ยนแปลงไปในทางที่ดีขึ้น ถ้าคุณวางแผนอย่างมีสติ`,
+  `${name} 💡 ลองหาความรู้เรื่องการเงินเพิ่มเติม จะช่วยให้คุณบริหารเงินได้อย่างมีประสิทธิภาพ`
+];
+
+
+
+      // สร้างดัชนีแบบสุ่มโดยใช้ข้อมูลบางส่วนผสม (วันเกิด+เลขท้าย)
+      const seed = dob.replace(/-/g, '') + idEnd;
+      let hash = 0;
+      for(let i=0; i < seed.length; i++) {
+        hash = (hash << 5) - hash + seed.charCodeAt(i);
+        hash |= 0; // Convert to 32bit integer
+      }
+      const index = Math.abs(hash) % predictions.length;
+
+      predictionDiv.textContent = predictions[index];
+    });
+  </script>
+
+</body>
+</html>

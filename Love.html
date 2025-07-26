@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ดูดวงความรัก</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Prompt', sans-serif;
+      background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+      margin: 0;
+      padding: 2rem 1rem;
+      color: #880e4f;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      align-items: center;
+    }
+    .container {
+      background: #fff0f6;
+      padding: 2rem 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(136, 14, 79, 0.3);
+      max-width: 320px;
+      width: 100%;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+    }
+    label {
+      display: block;
+      text-align: left;
+      font-weight: 600;
+      margin: 1rem 0 0.4rem 0;
+      font-size: 1rem;
+      color: #ad1457;
+    }
+    input[type="text"],
+    input[type="date"] {
+      width: 89%;
+      padding: 0.6rem 0.8rem;
+      border: 2px solid #f48fb1;
+      border-radius: 10px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+    input[type="text"]:focus,
+    input[type="date"]:focus {
+      border-color: #880e4f;
+    }
+    button.submit-btn {
+      margin-top: 2rem;
+      width: 100%;
+      background: linear-gradient(45deg, #d81b60, #f06292);
+      border: none;
+      border-radius: 25px;
+      color: white;
+      font-size: 1.15rem;
+      font-weight: 700;
+      padding: 0.85rem 0;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(216, 27, 96, 0.6);
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+    button.submit-btn:hover {
+      background: linear-gradient(45deg, #f06292, #d81b60);
+      transform: scale(1.05);
+    }
+
+    button.back-btn {
+      margin-top: 1rem;
+      background: #d6336c;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 0.8rem 1.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(214, 51, 108, 0.5);
+      transition: background 0.3s ease;
+    }
+    button.back-btn:hover {
+      background: #f783ac;
+    }
+
+    #prediction {
+      margin-top: 2rem;
+      background: #fce4ec;
+      border-radius: 15px;
+      padding: 1.3rem 1rem;
+      box-shadow: 0 4px 15px rgba(216, 27, 96, 0.25);
+      font-weight: 600;
+      color: #880e4f;
+      font-size: 1.1rem;
+      min-height: 3rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>🔮 ดูดวงความรัก</h1>
+
+    <form id="loveForm">
+      <label for="name">ชื่อ</label>
+      <input type="text" id="name" placeholder="กรอกชื่อของคุณ" required />
+
+      <label for="dob">วันเดือนปีเกิด</label>
+      <input type="date" id="dob" required />
+
+      <label for="idEnd">เลขท้ายบัตรประชาชน (3 ตัว)</label>
+      <input type="text" id="idEnd" placeholder="XXX" pattern="\d{3}" maxlength="3" required />
+
+      <button type="submit" class="submit-btn">รับคำทำนาย</button>
+    </form>
+
+    <button class="back-btn" onclick="window.location.href='horoscope.html'">⬅️ กลับไปดูดวงอื่น</button>
+
+    <div id="prediction"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('loveForm');
+    const predictionDiv = document.getElementById('prediction');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const dob = document.getElementById('dob').value;
+      const idEnd = document.getElementById('idEnd').value.trim();
+
+      if(!name || !dob || !/^\d{3}$/.test(idEnd)) {
+        predictionDiv.textContent = "กรุณากรอกข้อมูลให้ครบถ้วนและถูกต้องค่ะ";
+        return;
+      }
+
+      // สุ่มคำทำนายง่ายๆ ตัวอย่าง
+      const predictions = [
+  `${name} 💕 ความรักช่วงนี้อบอุ่น มีโอกาสพบความสุขเล็ก ๆ น้อย ๆ กับคนที่คุณรัก`,
+  `${name} 💖 อาจได้เริ่มต้นความสัมพันธ์ใหม่ที่น่าตื่นเต้น เปิดใจรับสิ่งใหม่ ๆ`,
+  `${name} 🌹 ระวังความเข้าใจผิดเล็ก ๆ น้อย ๆ อย่าปล่อยให้เรื่องเล็กกลายเป็นปัญหาใหญ่`,
+  `${name} 💌 คนโสดมีโอกาสพบรักจากคนใกล้ตัว หรือเพื่อนเก่าที่กลับมาใกล้ชิด`,
+  `${name} ✨ ความสัมพันธ์เก่า ๆ จะมีโอกาสฟื้นฟู ถ้าคุณเปิดใจพูดคุยอย่างจริงใจ`,
+  `${name} 🌸 ให้เวลากับตัวเองและคู่รักมากขึ้น เพื่อเติมเต็มความสัมพันธ์ให้สมบูรณ์`,
+  `${name} 💞 อย่าลืมสื่อสารและฟังกันอย่างตั้งใจ จะช่วยลดปัญหาและเข้าใจกันมากขึ้น`,
+  `${name} 🌟 ช่วงนี้ความรักเหมือนการเดินทางที่เต็มไปด้วยความหวังและความฝันใหม่ ๆ`
+];
+
+
+      // สร้างดัชนีแบบสุ่มโดยใช้ข้อมูลบางส่วนผสม (วันเกิด+เลขท้าย)
+      const seed = dob.replace(/-/g, '') + idEnd;
+      let hash = 0;
+      for(let i=0; i < seed.length; i++) {
+        hash = (hash << 5) - hash + seed.charCodeAt(i);
+        hash |= 0; // Convert to 32bit integer
+      }
+      const index = Math.abs(hash) % predictions.length;
+
+      predictionDiv.textContent = predictions[index];
+    });
+  </script>
+
+</body>
+</html>

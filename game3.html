@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>เกมจิตวิทยาโลกคู่ขนาน คุณเป็นใคร?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Prompt', sans-serif;
+      background: linear-gradient(135deg, #f0e9f8, #c9e0ff);
+      margin: 0; padding: 1rem;
+      color: #3a1c71;
+      text-align: center;
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+    }
+    h1 {
+      margin-bottom: 1rem;
+    }
+    .question-box {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px #c9e0ff;
+      max-width: 350px;
+      width: 89%;
+    }
+    .question {
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    .answers {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+      text-align: left;
+    }
+    label {
+      cursor: pointer;
+      background: #c9e0ff;
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+      user-select: none;
+      display: flex;
+      align-items: center;
+    }
+    input[type="radio"] {
+      margin-right: 0.7rem;
+    }
+    label:hover {
+      background: #86b4f0;
+    }
+    .btn-container {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+    button {
+      background: #a0c7fc;
+      color: white;
+      border: none;
+      padding: 0.7rem 2rem;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background: #79a7e4;
+    }
+    #result {
+      margin-top: 1rem;
+      background: #f3e8ff;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 3px 12px #c9e0ff;
+      max-width: 400px;
+      font-size: 1.1rem;
+      color: #578dd4;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🌀 เกมจิตวิทยาโลกคู่ขนาน คุณเป็นใคร?</h1>
+
+  <div class="question-box" id="quiz"></div>
+
+  <div id="result"></div>
+
+<script>
+  const questions = [
+    {
+      question: "1. ถ้าโลกคู่ขนานเปิดให้คุณเลือกชีวิตใหม่ คุณอยากเป็นใคร?",
+      answers: [
+        { text: "นักวางแผนที่ชาญฉลาดและคุมเกมได้", score: "strategist" },
+        { text: "ผู้ที่เชื่อมโยงความรู้สึกกับผู้อื่นอย่างลึกซึ้ง", score: "empath" },
+        { text: "นักสำรวจโลกลี้ลับและค้นหาความจริง", score: "explorer" },
+        { text: "ผู้ที่มีความสงบและสมดุลในทุกสถานการณ์", score: "peaceful" }
+      ]
+    },
+    {
+      question: "2. เมื่อเจอสถานการณ์ไม่แน่นอน คุณมักจะ...",
+      answers: [
+        { text: "วางแผนเพื่อควบคุมและจัดการ", score: "strategist" },
+        { text: "ฟังเสียงหัวใจและความรู้สึกของคนรอบข้าง", score: "empath" },
+        { text: "สำรวจและเปิดใจรับสิ่งที่ไม่รู้", score: "explorer" },
+        { text: "ทำใจให้สงบและยอมรับสิ่งที่เกิดขึ้น", score: "peaceful" }
+      ]
+    },
+    {
+      question: "3. สิ่งที่คุณค่ามากที่สุดในโลกคู่ขนานคืออะไร?",
+      answers: [
+        { text: "การมีอำนาจควบคุม", score: "strategist" },
+        { text: "ความสัมพันธ์และความเข้าใจ", score: "empath" },
+        { text: "การค้นพบและความลึกลับ", score: "explorer" },
+        { text: "ความสมดุลและความสงบ", score: "peaceful" }
+      ]
+    },
+    {
+      question: "4. ถ้าคุณต้องเลือกพลังพิเศษในโลกคู่ขนาน คุณอยากได้อะไร?",
+      answers: [
+        { text: "พลังการวางแผนล่วงหน้าอย่างแม่นยำ", score: "strategist" },
+        { text: "พลังรับรู้ความรู้สึกผู้อื่น", score: "empath" },
+        { text: "พลังเดินทางข้ามมิติ", score: "explorer" },
+        { text: "พลังรักษาจิตใจให้สงบ", score: "peaceful" }
+      ]
+    },
+    {
+      question: "5. ถ้าได้เลือกทางเดินชีวิตในโลกคู่ขนาน คุณจะ...",
+      answers: [
+        { text: "เลือกเส้นทางที่คาดการณ์ได้และมั่นคง", score: "strategist" },
+        { text: "เลือกเส้นทางที่เต็มไปด้วยความสัมพันธ์ลึกซึ้ง", score: "empath" },
+        { text: "เลือกเส้นทางที่เต็มไปด้วยการผจญภัยและค้นหา", score: "explorer" },
+        { text: "เลือกเส้นทางที่นำไปสู่ความสงบและความสมดุล", score: "peaceful" }
+      ]
+    },
+    {
+      question: "6. คุณรับมือกับความท้าทายในโลกคู่ขนานอย่างไร?",
+      answers: [
+        { text: "วางแผนและวิเคราะห์ความเสี่ยงอย่างละเอียด", score: "strategist" },
+        { text: "ขอความช่วยเหลือและพึ่งพาคนรอบข้าง", score: "empath" },
+        { text: "มองว่าเป็นการเรียนรู้และเติบโต", score: "explorer" },
+        { text: "ทำสมาธิและหาวิธีผ่อนคลายจิตใจ", score: "peaceful" }
+      ]
+    },
+    {
+      question: "7. สีที่สะท้อนตัวตนคุณในโลกคู่ขนานคือสีอะไร?",
+      answers: [
+        { text: "น้ำเงินเข้ม", score: "strategist" },
+        { text: "ชมพูอ่อน", score: "empath" },
+        { text: "ม่วงเข้ม", score: "explorer" },
+        { text: "เขียวอ่อน", score: "peaceful" }
+      ]
+    },
+    {
+      question: "8. เพลงแนวไหนที่คุณฟังในโลกคู่ขนาน?",
+      answers: [
+        { text: "เพลงที่มีจังหวะเร้าใจและชัดเจน", score: "strategist" },
+        { text: "เพลงที่มีเนื้อหาอบอุ่นและเชื่อมโยงความรู้สึก", score: "empath" },
+        { text: "เพลงลึกลับและชวนค้นหา", score: "explorer" },
+        { text: "เพลงบรรเลงและผ่อนคลาย", score: "peaceful" }
+      ]
+    },
+    {
+      question: "9. เวลาคุณอยู่คนเดียวในโลกคู่ขนาน คุณมักจะ...",
+      answers: [
+        { text: "คิดวางแผนและตั้งเป้าหมายใหม่", score: "strategist" },
+        { text: "นึกถึงความสัมพันธ์และความผูกพัน", score: "empath" },
+        { text: "ฝันถึงการผจญภัยครั้งใหม่", score: "explorer" },
+        { text: "พักผ่อนและหาความสงบใจ", score: "peaceful" }
+      ]
+    },
+    {
+      question: "10. คุณอยากให้โลกคู่ขนานของคุณเป็นแบบไหน?",
+      answers: [
+        { text: "โลกที่คุณเป็นผู้นำและควบคุมทุกอย่าง", score: "strategist" },
+        { text: "โลกที่ความรักและความเข้าใจเป็นสิ่งสำคัญ", score: "empath" },
+        { text: "โลกที่เต็มไปด้วยความลึกลับและการค้นพบ", score: "explorer" },
+        { text: "โลกที่สงบสุขและทุกคนมีความสมดุล", score: "peaceful" }
+      ]
+    }
+  ];
+
+  let currentQuestion = 0;
+  const quizDiv = document.getElementById("quiz");
+  const resultDiv = document.getElementById("result");
+  const scores = { strategist: 0, empath: 0, explorer: 0, peaceful: 0 };
+  const userAnswers = [];
+
+  function showQuestion() {
+    const q = questions[currentQuestion];
+    let html = `<div class="question">${q.question}</div><div class="answers">`;
+    q.answers.forEach((a) => {
+      const checked = userAnswers[currentQuestion] === a.score ? "checked" : "";
+      html += `
+        <label>
+          <input type="radio" name="answer" value="${a.score}" required ${checked}>
+          ${a.text}
+        </label>
+      `;
+    });
+    html += `</div><div class="btn-container">`;
+
+    if (currentQuestion > 0) {
+      html += `<button id="backBtn">ย้อนกลับ</button>`;
+    }
+
+    html += `<button id="nextBtn">${currentQuestion === questions.length - 1 ? "ดูผลลัพธ์" : "ถัดไป"}</button></div>`;
+
+    quizDiv.innerHTML = html;
+
+    document.getElementById("nextBtn").addEventListener("click", () => {
+      const selected = document.querySelector('input[name="answer"]:checked');
+      if (!selected) {
+        alert("กรุณาเลือกคำตอบก่อนค่ะ");
+        return;
+      }
+      userAnswers[currentQuestion] = selected.value;
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        showQuestion();
+      } else {
+        calculateScores();
+        showResult();
+      }
+    });
+
+    if (currentQuestion > 0) {
+      document.getElementById("backBtn").addEventListener("click", () => {
+        currentQuestion--;
+        showQuestion();
+      });
+    }
+  }
+
+  function calculateScores() {
+    scores.strategist = 0;
+    scores.empath = 0;
+    scores.explorer = 0;
+    scores.peaceful = 0;
+
+    userAnswers.forEach(ans => {
+      if (ans) scores[ans]++;
+    });
+  }
+
+  function showResult() {
+    quizDiv.style.display = "none";
+    let maxScore = 0;
+    let maxType = "";
+    for (const type in scores) {
+      if (scores[type] > maxScore) {
+        maxScore = scores[type];
+        maxType = type;
+      }
+    }
+
+    let message = "";
+    switch (maxType) {
+      case "strategist":
+        message = "♟️ คุณคือผู้วางแผนโลกคู่ขนานที่คุมสถานการณ์และตัดสินใจอย่างมีเหตุผล!";
+        break;
+      case "empath":
+        message = "💗 คุณคือผู้ที่เข้าใจและเชื่อมโยงความรู้สึกกับผู้อื่นอย่างลึกซึ้ง!";
+        break;
+      case "explorer":
+        message = "🧭 คุณคือผู้ที่รักการผจญภัยและค้นหาความลับของโลกคู่ขนาน!";
+        break;
+      case "peaceful":
+        message = "🌿 คุณคือผู้ที่รักษาความสงบและสมดุลในโลกคู่ขนานของคุณ!";
+        break;
+      default:
+        message = "ขออภัย เกิดข้อผิดพลาดในการวิเคราะห์ผลลัพธ์";
+    }
+
+    resultDiv.innerHTML = `<h2>ผลลัพธ์ของคุณ</h2><p>${message}</p>`;
+  }
+
+  showQuestion();
+</script>
+
+</body>
+</html>
