@@ -17,12 +17,13 @@
     }
     h1 {
       margin-bottom: 1rem;
+      color: #3a1c71;
     }
     .question-box {
       background: white;
       padding: 1.5rem;
       border-radius: 12px;
-      box-shadow: 0 5px 15px #c9e0ff;
+      box-shadow: 0 5px 15px rgba(58, 28, 113, 0.15);
       max-width: 300px;
       width: 89%;
     }
@@ -53,33 +54,45 @@
     label:hover {
       background: #86b4f0;
     }
-    .btn-container {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-    }
     button {
-      background: #a0c7fc;
+      background: #4b7adf;
       color: white;
       border: none;
-      padding: 0.7rem 2rem;
+      padding: 0.7rem 1.5rem;
       border-radius: 10px;
       font-size: 1.1rem;
       cursor: pointer;
       transition: background-color 0.3s;
+      margin: 0 0.5rem;
     }
     button:hover {
-      background: #79a7e4;
+      background: #143f70;
     }
     #result {
       margin-top: 1rem;
-      background: #f3e8ff;
-      padding: 1rem;
-      border-radius: 12px;
-      box-shadow: 0 3px 12px #c9e0ff;
-      max-width: 400px;
+      background: #e3ddff;
+      padding: 2rem 1.5rem;
+      border-radius: 16px;
+      box-shadow: 0 3px 12px #1b4883;
+      max-width: 450px;
       font-size: 1.1rem;
-      color: #578dd4;
+      color: #1b4883;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+    #result img {
+      width: 100px;
+      border-radius: 50%;
+      margin: 1rem auto;
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .btn-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 0.5rem;
     }
   </style>
 </head>
@@ -195,7 +208,7 @@
     const q = questions[currentQuestion];
     let html = `<div class="question">${q.question}</div><div class="answers">`;
     q.answers.forEach((a) => {
-      const checked = userAnswers[currentQuestion] === a.score ? "checked" : "";
+      const checked = userAnswers[currentQuestion] === a.score ? 'checked' : '';
       html += `
         <label>
           <input type="radio" name="answer" value="${a.score}" required ${checked}>
@@ -242,10 +255,7 @@
     scores.empath = 0;
     scores.explorer = 0;
     scores.peaceful = 0;
-
-    userAnswers.forEach(ans => {
-      if (ans) scores[ans]++;
-    });
+    userAnswers.forEach(ans => { if(ans) scores[ans]++; });
   }
 
   function showResult() {
@@ -259,25 +269,35 @@
       }
     }
 
-    let message = "";
-    switch (maxType) {
-      case "strategist":
-        message = "♟️ คุณคือผู้วางแผนโลกคู่ขนานที่คุมสถานการณ์และตัดสินใจอย่างมีเหตุผล!";
-        break;
-      case "empath":
-        message = "💗 คุณคือผู้ที่เข้าใจและเชื่อมโยงความรู้สึกกับผู้อื่นอย่างลึกซึ้ง!";
-        break;
-      case "explorer":
-        message = "🧭 คุณคือผู้ที่รักการผจญภัยและค้นหาความลับของโลกคู่ขนาน!";
-        break;
-      case "peaceful":
-        message = "🌿 คุณคือผู้ที่รักษาความสงบและสมดุลในโลกคู่ขนานของคุณ!";
-        break;
-      default:
-        message = "ขออภัย เกิดข้อผิดพลาดในการวิเคราะห์ผลลัพธ์";
-    }
+    const resultData = {
+      strategist: {
+        message: "♟️ คุณคือผู้วางแผนโลกคู่ขนานที่คุมสถานการณ์และตัดสินใจอย่างมีเหตุผล! คุณเป็นคนมีวิสัยทัศน์และมองการณ์ไกล ชอบควบคุมสิ่งต่าง ๆ ให้เป็นไปตามแผนที่วางไว้",
+        image: "https://cdn-icons-png.flaticon.com/512/616/616408.png"
+      },
+      empath: {
+        message: "💗 คุณคือผู้ที่เข้าใจและเชื่อมโยงความรู้สึกกับผู้อื่นอย่างลึกซึ้ง! คุณเป็นคนใจดี มีความเห็นอกเห็นใจ และพร้อมช่วยเหลือผู้อื่นเสมอ",
+        image: "https://cdn-icons-png.flaticon.com/512/1077/1077063.png"
+      },
+      explorer: {
+        message: "🧭 คุณคือผู้ที่รักการผจญภัยและค้นหาความลับของโลกคู่ขนาน! คุณชอบความท้าทาย และไม่กลัวที่จะลองสิ่งใหม่ ๆ เพื่อค้นหาความจริง",
+        image: "https://cdn-icons-png.flaticon.com/512/1051/1051277.png"
+      },
+      peaceful: {
+        message: "🌿 คุณคือผู้ที่รักษาความสงบและสมดุลในโลกคู่ขนานของคุณ! คุณเป็นคนใจเย็น รักความสงบ และสามารถรักษาความสมดุลในชีวิตได้ดี",
+        image: "https://cdn-icons-png.flaticon.com/512/1077/1077066.png"
+      }
+    };
 
-    resultDiv.innerHTML = `<h2>ผลลัพธ์ของคุณ</h2><p>${message}</p>`;
+    const result = resultData[maxType] || { message: "ขออภัย เกิดข้อผิดพลาดในการวิเคราะห์ผลลัพธ์", image: "" };
+
+    resultDiv.innerHTML = `
+      <h2>ผลลัพธ์ของคุณ</h2>
+      <img src="${result.image}" alt="ผลลัพธ์" />
+      <p>${result.message}</p>
+      <p>✨ แชร์ผลลัพธ์นี้ให้โลกได้รู้กันเถอะ ✨</p>
+      <br>
+      <button onclick="location.reload()">เล่นอีกครั้ง</button>
+    `;
   }
 
   showQuestion();
